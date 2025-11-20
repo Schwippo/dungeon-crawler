@@ -82,10 +82,10 @@ void Level::placeCharacter(Character* c, int r, int col) {
     Tile* t = getTile(r, col);
     if (!t) return;
 
-    // clear old floor
+    // clear old tile
     if (c->getTile()) c->getTile()->setCharacter(nullptr);
 
-    // set new floor
+    // set new tile
     t->setCharacter(c);
     c->setTile(t);
 }

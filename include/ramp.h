@@ -5,7 +5,10 @@
 
 class Ramp : public Tile {
 public:
-    Ramp();
+    Ramp(int r, int c);
+
+    std::pair<bool, Tile*> onEnter(Character* who) override;
+    bool onLeave(Tile* destTile, Character* who) override;
 };
 
 #endif // RAMP_H

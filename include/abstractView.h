@@ -1,7 +1,7 @@
 #ifndef ABSTRACTVIEW_H
 #define ABSTRACTVIEW_H
 
-class Level;
+#include "level.h"
 
 class AbstractView {
 public:

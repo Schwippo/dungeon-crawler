@@ -31,12 +31,12 @@ bool DungeonCrawler::turn() {
         return false;
     }
 
-    // 1) input
+    // input
     Input in = player->getNextMove();
     std::cout.flush();
     if (in.quit) return false;
 
-    // 2) dest. floor
+    // 2) dest. tile
     int r = player->getTile()->getRow() + in.dr;
     int c = player->getTile()->getColumn() + in.dc;
 

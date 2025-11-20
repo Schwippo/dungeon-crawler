@@ -2,9 +2,10 @@
 #define CHARACTER_H
 
 #include "abstractController.h"
+#include "tile.h"
 #include <string>
 
-class Tile;
+class Level;
 class AbstractController;
 
 class Character {

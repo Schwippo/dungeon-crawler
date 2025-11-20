@@ -1,7 +1,6 @@
 #ifndef ABSTRACTCONTROLLER_H
 #define ABSTRACTCONTROLLER_H
 
-// Eingabe-Struktur für Bewegung (row, col) und Beenden
 struct Input {
     int dr{0};
     int dc{0};
