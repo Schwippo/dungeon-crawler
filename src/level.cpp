@@ -8,7 +8,7 @@
 #include <cassert>
 
 Level::Level() {
-    // Beispiel Level
+    // example
     const std::vector<std::string> l = {
         "##########",
         "#O.......#",
@@ -25,7 +25,7 @@ Level::Level() {
     width = static_cast<int>(l.front().size());
     grid.assign(height, std::vector<Tile*>(width, nullptr));
 
-    // tiles erzeugen
+    // create tiles
     std::vector<Portal*> portals;
     for (int r = 0; r < height; ++r) {
         assert((int)l[r].size() == width);
@@ -46,16 +46,16 @@ Level::Level() {
         }
     }
 
-    // portale paaren
+    // pair portals
     for (size_t i = 0; i < portals.size(); i+= 2) {
         portals[i]->setDestination(portals[i+1]);
         portals[i+1]->setDestination(portals[i]);
     }
 
-    // eine Figur an Startposition setzen
+    // set character on start
     Character* hero = new Character("X");
     characters.push_back(hero);
-    placeCharacter(hero, 2, 2); // Irgendwo bei (2,2)
+    placeCharacter(hero, 2, 2);
 }
 
 Level::~Level() {
@@ -82,10 +82,10 @@ void Level::placeCharacter(Character* c, int r, int col) {
     Tile* t = getTile(r, col);
     if (!t) return;
 
-    // alte kachel räumen
+    // clear old floor
     if (c->getTile()) c->getTile()->setCharacter(nullptr);
 
-    // neue Kachel setzen
+    // set new floor
     t->setCharacter(c);
     c->setTile(t);
 }

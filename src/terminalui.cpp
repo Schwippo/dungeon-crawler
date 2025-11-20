@@ -18,7 +18,6 @@ void TerminalUI::draw(Level* level) {
 }
 
 Input TerminalUI::move() {
-    //std::cout << "DEBUG: move() erreicht\n";
     std::cout.flush();
     Input in{};
     int v = -1;
@@ -27,10 +26,9 @@ Input TerminalUI::move() {
     std::cout.flush();
 
     if (!(std::cin >> v)) {
-        // Ungültige Eingabe
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return in; // steht, keine Bewegung
+        return in; // no movement
     }
 
     switch (v) {

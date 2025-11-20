@@ -3,8 +3,8 @@
 std::string Tile::getTexture() const {
     if (character) {
         extern const std::string& getCharacterTexture(const Character*);
-        // Für P1 nur Rückgabe der Kachel
-        // Wenn keine Figur: Platzhalter 'X'
+        // P1: return tile
+        // no character: 'X'
     }
     return character ? std::string("X") : texture;
 }
@@ -21,28 +21,28 @@ bool Tile::moveTo(Tile *destTile, Character *who) {
     if (!destTile || !who)
         return false;
 
-    // 1) Darf aktuelle Kachel verlassen werden?
+    // 1) can tile be left?
     if (!onLeave(destTile, who))
         return false;
 
-    // 2) Zielkachel fragen, ob sie betreten werden darf
+    // 2) ask if dest. tile can be entered
     auto[ok, altTile] = destTile->onEnter(who);
     if (!ok) return false;
 
     Tile* entered = altTile ? altTile : destTile;
 
-    // 3) Zustandswechsel: Character von 'this' nach 'entered' bewegen
+    // 3) change: move character from 'this' to 'entered'
     if (this->character == who) {
         this->character = nullptr;
     }
     entered->setCharacter(who);
 
-    // Character muss merken wo er jetzt steht
+    // character notices where he stands
     who->setTile(entered);
     return true;
 }
 
 bool Tile::onLeave(Tile* /*destTile*/, Character* /*who*/) {
-    // in P1 immer true
+    // in P1 always true
     return true;
 }

@@ -9,26 +9,40 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/abstractui.cpp \
+    src/abstractView.cpp \
+    src/abstractcontroller.cpp \
+    src/active.cpp \
     src/character.cpp \
+    src/door.cpp \
     src/dungeoncrawler.cpp \
     src/floor.cpp \
     src/level.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
+    src/passive.cpp \
+    src/pit.cpp \
     src/portal.cpp \
+    src/ramp.cpp \
+    src/switch.cpp \
     src/terminalui.cpp \
     src/tile.cpp \
     src/wall.cpp
 
 HEADERS += \
-    include/abstractui.h \
+    include/abstractView.h \
+    include/abstractcontroller.h \
+    include/active.h \
     include/character.h \
+    include/door.h \
     include/dungeoncrawler.h \
     include/floor.h \
     include/level.h \
     include/mainwindow.h \
+    include/passive.h \
+    include/pit.h \
     include/portal.h \
+    include/ramp.h \
+    include/switch.h \
     include/terminalui.h \
     include/tile.h \
     include/wall.h

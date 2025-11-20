@@ -1,13 +1,10 @@
 #ifndef TERMINALUI_H
 #define TERMINALUI_H
 
-#include "include/abstractui.h"
+#include "../include/abstractView.h"
+#include "../include/abstractcontroller.h"
 
-#include <iostream>
-#include <string>
-
-
-class TerminalUI : public AbstractUI {
+class TerminalUI : public AbstractView, public AbstractController {
 public:
     void draw(Level* level) override;
     Input move() override;

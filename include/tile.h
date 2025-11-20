@@ -6,22 +6,20 @@
 
 class Character;
 
-// abstract class Tile mit Events
 class Tile {
 protected:
-    std::string texture; // Basistextur
-    Character* character; // Figur auf der Kachel / wenn nicht: nullptr
+    std::string texture;
+    Character* character;
     const int row;
     const int column;
 
-    // Konstruktor protected, damit nur Unterklassen erzeugt werden
+    // constructor is protected -> only lowerclass can call
     Tile(std::string tex, int r, int c)
         : texture(std::move(tex)), character(nullptr), row(r), column(c) {}
 
 public:
     virtual ~Tile() = default;
 
-    // Anzeigename: wenn Figur auf Kachel, dann deren Textur, wenn nicht: eigene
     virtual std::string getTexture() const;
 
     bool hasCharacter() const;
@@ -31,15 +29,14 @@ public:
     int getRow() const;
     int getColumn() const;
 
-    // true, wenn Bewegung erfolgreich (inkl. enter/ leave)
+    // true if movement with success (incl. enter/ leave)
     bool moveTo(Tile* destTile, Character* who);
 
-    // Event beim Verlassen
-    // In P1 immer true
+    // Event on leave
     virtual bool onLeave(Tile* destTile, Character* who);
 
-    // Event beim Betreten (erlaubt? -> alternativee Zielkachel)
-    // Portal nutzt alternative Zielkachel, sonst nullptr
+    // Event on enter (allowed? -> alternative dest. floor)
+    // Portal uses alternative dest. floor, else nullptr
     virtual std::pair<bool, Tile*> onEnter(Character* who) = 0;
 };
 

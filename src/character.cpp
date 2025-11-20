@@ -10,11 +10,9 @@ const std::string& Character::getTexture() const { return texture; }
 Tile* Character::getTile() const { return tile;}
 void Character::setTile(Tile* t) { tile = t; }
 
-void Character::setUI(AbstractUI* u) { ui = u; }
+void Character::setController(AbstractController* c) { controller = c; }
 
 Input Character::getNextMove() {
-    //std::cout << "DEBUG: getNextMove() erreicht\n";
     std::cout.flush();
-    // Delegiert an UI, falls vorhanden, sonst keine Bewegung
-    return ui ? ui->move() : Input{};
+    return controller ? controller->move() : Input{};
 }
