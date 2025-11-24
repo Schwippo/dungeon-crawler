@@ -1,28 +1,22 @@
 #ifndef DUNGEONCRAWLER_H
 #define DUNGEONCRAWLER_H
 
-#include "abstractcontroller.h"
-#include "abstractView.h"
 #include "level.h"
-#include "character.h"
+#include "terminalui.h"
 
-#include <cstdlib>
-
-class Level;
-class AbstractController;
-class Character;
 
 class DungeonCrawler {
+private:
     Level* level;
-    AbstractController* controller;
+    TerminalUI* ui;
+
+    bool turn();
 
 public:
     DungeonCrawler();
     ~DungeonCrawler();
 
-    bool turn();
-
-    Level* getLevel() const;
+    void run();
 };
 
 

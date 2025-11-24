@@ -4,7 +4,7 @@
 #include <QApplication>
 #include <iostream>
 
-int main(int argc, char *argv[])
+/*int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
@@ -17,5 +17,12 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "Spiel beendet\n";
+    return 0;
+}
+*/
+
+int main() {
+    DungeonCrawler game;
+    game.run();
     return 0;
 }

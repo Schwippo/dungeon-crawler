@@ -1,53 +1,60 @@
 #include "../include/dungeoncrawler.h"
-#include "../include/level.h"
-#include "../include/terminalui.h"
-#include "../include/character.h"
-#include "../include/tile.h"
 #include <iostream>
 
-DungeonCrawler::DungeonCrawler()
-    : level(new Level()), controller(new TerminalUI()) {
+DungeonCrawler::DungeonCrawler() {
+    ui = new TerminalUI();
+    Level* tmp = new Level();
 
-    if (auto* p = level->getPlayer()) {
-        p->setController(controller);
-    }
-    controller->draw(level);
-    std::cout.flush();
+    // test copy constructor
+    level = new Level(*tmp);
+
+    // test assignment operator
+    *level = *tmp;
+    delete tmp;
+
+    // set player-controller
+    if(level->getPlayer())
+        level->getPlayer()->setController(ui);
 }
 
 DungeonCrawler::~DungeonCrawler() {
-    delete controller;
     delete level;
+    delete ui;
 }
 
-Level *DungeonCrawler::getLevel() const { return level; }
-
 bool DungeonCrawler::turn() {
-    std::cout.flush();
+    Character* player = level->getPlayer();
 
-    auto* player = level->getPlayer();
-    if (!player) {
-        std::cout.flush();
+    if (!player)
         return false;
-    }
 
-    // input
+    // take input
     Input in = player->getNextMove();
-    std::cout.flush();
-    if (in.quit) return false;
+    if (in.quit)
+        return false;
 
     // 2) dest. tile
-    int r = player->getTile()->getRow() + in.dr;
-    int c = player->getTile()->getColumn() + in.dc;
+    Tile* currentTile = player->getTile();
+    if(!currentTile)
+        return false;
 
-    auto* dest = level->getTile(r, c);
+    int r = currentTile->getRow() + in.dr;
+    int c = currentTile->getColumn() + in.dc;
+
+    Tile* destinationTile = level->getTile(r, c);
 
     // 3) movement if in level
-    if (dest) {
-        player->getTile()->moveTo(dest, player);
-    }
+    if (destinationTile)
+        currentTile->moveTo(destinationTile, player);
 
-    // 4) new drawing
-    controller->draw(level);
     return true;
+}
+
+void DungeonCrawler::run() {
+    bool running = true;
+
+    while(running) {
+        ui->draw(level);
+        running = turn();
+    }
 }

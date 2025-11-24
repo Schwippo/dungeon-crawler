@@ -1,7 +1,8 @@
 #ifndef ACTIVE_H
 #define ACTIVE_H
 #include <vector>
-#include "passive.h"
+
+class Passive;
 
 class Active {
 private:

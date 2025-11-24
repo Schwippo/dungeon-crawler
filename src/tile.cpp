@@ -1,12 +1,9 @@
 #include "../include/tile.h"
 
 std::string Tile::getTexture() const {
-    if (character) {
-        extern const std::string& getCharacterTexture(const Character*);
-        // P1: return tile
-        // no character: 'X'
-    }
-    return character ? std::string("X") : texture;
+    if (character)
+        return character->getTexture();
+    return texture;
 }
 
 bool Tile::hasCharacter() const { return character != nullptr; }
@@ -18,31 +15,31 @@ int Tile::getRow() const { return row; }
 int Tile::getColumn() const { return column; }
 
 bool Tile::moveTo(Tile *destTile, Character *who) {
-    if (!destTile || !who)
-        return false;
+    if (!destTile || !who) return false;
 
     // 1) can tile be left?
     if (!onLeave(destTile, who))
         return false;
 
     // 2) ask if dest. tile can be entered
-    auto[ok, altTile] = destTile->onEnter(who);
-    if (!ok) return false;
+    auto[canEnter, teleportTile] = destTile->onEnter(who);
+    if (!canEnter) return false;
 
-    Tile* entered = altTile ? altTile : destTile;
+    Tile* finalTile = teleportTile ? teleportTile : destTile;
 
-    // 3) change: move character from 'this' to 'entered'
-    if (this->character == who) {
-        this->character = nullptr;
-    }
-    entered->setCharacter(who);
+    // 3) change: save character on new tile
+    // clear old tile
+    this->setCharacter(nullptr);
+
+    // set new tile
+    finalTile->setCharacter(who);
 
     // character notices where he stands
-    who->setTile(entered);
+    who->setTile(finalTile);
     return true;
 }
 
 bool Tile::onLeave(Tile* /*destTile*/, Character* /*who*/) {
-    // in P1 always true
+    // in P1 always true -> tile can always be left
     return true;
 }

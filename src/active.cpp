@@ -1,4 +1,5 @@
 #include "../include/active.h"
+#include "../include/passive.h"
 
 // TO DO
 // NEW METHOD FOR ADD AND DELETE
@@ -17,6 +18,6 @@ void Active::detach(Passive* p) {
 
 void Active::active() {
     for(auto * p : listeners) {
-        p->notify();
+        if(p) p->notify();
     }
 }

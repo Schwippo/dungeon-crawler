@@ -52,25 +52,39 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../../src/abstractui.cpp \
+SOURCES       = ../../src/abstractView.cpp \
+		../../src/abstractcontroller.cpp \
+		../../src/active.cpp \
 		../../src/character.cpp \
+		../../src/door.cpp \
 		../../src/dungeoncrawler.cpp \
 		../../src/floor.cpp \
 		../../src/level.cpp \
 		../../src/main.cpp \
 		../../src/mainwindow.cpp \
+		../../src/passive.cpp \
+		../../src/pit.cpp \
 		../../src/portal.cpp \
+		../../src/ramp.cpp \
+		../../src/switch.cpp \
 		../../src/terminalui.cpp \
 		../../src/tile.cpp \
 		../../src/wall.cpp moc_mainwindow.cpp
-OBJECTS       = abstractui.o \
+OBJECTS       = abstractView.o \
+		abstractcontroller.o \
+		active.o \
 		character.o \
+		door.o \
 		dungeoncrawler.o \
 		floor.o \
 		level.o \
 		main.o \
 		mainwindow.o \
+		passive.o \
+		pit.o \
 		portal.o \
+		ramp.o \
+		switch.o \
 		terminalui.o \
 		tile.o \
 		wall.o \
@@ -323,23 +337,37 @@ DIST          = /Users/lena/Qt/6.9.3/macos/mkspecs/features/spec_pre.prf \
 		/Users/lena/Qt/6.9.3/macos/mkspecs/features/exceptions.prf \
 		/Users/lena/Qt/6.9.3/macos/mkspecs/features/yacc.prf \
 		/Users/lena/Qt/6.9.3/macos/mkspecs/features/lex.prf \
-		../../../../DungeonCrawlerQt.pro ../../include/abstractui.h \
+		../../../../DungeonCrawlerQt.pro ../../include/abstractView.h \
+		../../include/abstractcontroller.h \
+		../../include/active.h \
 		../../include/character.h \
+		../../include/door.h \
 		../../include/dungeoncrawler.h \
 		../../include/floor.h \
 		../../include/level.h \
 		../../include/mainwindow.h \
+		../../include/passive.h \
+		../../include/pit.h \
 		../../include/portal.h \
+		../../include/ramp.h \
+		../../include/switch.h \
 		../../include/terminalui.h \
 		../../include/tile.h \
-		../../include/wall.h ../../src/abstractui.cpp \
+		../../include/wall.h ../../src/abstractView.cpp \
+		../../src/abstractcontroller.cpp \
+		../../src/active.cpp \
 		../../src/character.cpp \
+		../../src/door.cpp \
 		../../src/dungeoncrawler.cpp \
 		../../src/floor.cpp \
 		../../src/level.cpp \
 		../../src/main.cpp \
 		../../src/mainwindow.cpp \
+		../../src/passive.cpp \
+		../../src/pit.cpp \
 		../../src/portal.cpp \
+		../../src/ramp.cpp \
+		../../src/switch.cpp \
 		../../src/terminalui.cpp \
 		../../src/tile.cpp \
 		../../src/wall.cpp
@@ -896,8 +924,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../../include/abstractui.h ../../include/character.h ../../include/dungeoncrawler.h ../../include/floor.h ../../include/level.h ../../include/mainwindow.h ../../include/portal.h ../../include/terminalui.h ../../include/tile.h ../../include/wall.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../src/abstractui.cpp ../../src/character.cpp ../../src/dungeoncrawler.cpp ../../src/floor.cpp ../../src/level.cpp ../../src/main.cpp ../../src/mainwindow.cpp ../../src/portal.cpp ../../src/terminalui.cpp ../../src/tile.cpp ../../src/wall.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../include/abstractView.h ../../include/abstractcontroller.h ../../include/active.h ../../include/character.h ../../include/door.h ../../include/dungeoncrawler.h ../../include/floor.h ../../include/level.h ../../include/mainwindow.h ../../include/passive.h ../../include/pit.h ../../include/portal.h ../../include/ramp.h ../../include/switch.h ../../include/terminalui.h ../../include/tile.h ../../include/wall.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../src/abstractView.cpp ../../src/abstractcontroller.cpp ../../src/active.cpp ../../src/character.cpp ../../src/door.cpp ../../src/dungeoncrawler.cpp ../../src/floor.cpp ../../src/level.cpp ../../src/main.cpp ../../src/mainwindow.cpp ../../src/passive.cpp ../../src/pit.cpp ../../src/portal.cpp ../../src/ramp.cpp ../../src/switch.cpp ../../src/terminalui.cpp ../../src/tile.cpp ../../src/wall.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../mainwindow.ui $(DISTDIR)/
 
 
@@ -959,46 +987,71 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 
 ####### Compile
 
-abstractui.o: ../../src/abstractui.cpp ../../include/abstractui.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o abstractui.o ../../src/abstractui.cpp
+abstractView.o: ../../src/abstractView.cpp ../../include/abstractView.h \
+		../../include/level.h \
+		../../include/tile.h \
+		../../include/character.h \
+		../../include/abstractController.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o abstractView.o ../../src/abstractView.cpp
+
+abstractcontroller.o: ../../src/abstractcontroller.cpp ../../include/abstractcontroller.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o abstractcontroller.o ../../src/abstractcontroller.cpp
+
+active.o: ../../src/active.cpp ../../include/active.h \
+		../../include/passive.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o active.o ../../src/active.cpp
 
 character.o: ../../src/character.cpp ../../include/character.h \
-		../../include/abstractui.h
+		../../include/abstractController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o character.o ../../src/character.cpp
 
-dungeoncrawler.o: ../../src/dungeoncrawler.cpp ../../include/dungeoncrawler.h \
-		../../include/abstractUI.h \
-		../../include/level.h \
-		../../include/character.h \
-		../../include/abstractui.h \
+door.o: ../../src/door.cpp ../../include/door.h \
 		../../include/tile.h \
-		../../include/terminalui.h
+		../../include/character.h \
+		../../include/abstractController.h \
+		../../include/passive.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o door.o ../../src/door.cpp
+
+dungeoncrawler.o: ../../src/dungeoncrawler.cpp ../../include/dungeoncrawler.h \
+		../../include/level.h \
+		../../include/tile.h \
+		../../include/character.h \
+		../../include/abstractController.h \
+		../../include/terminalui.h \
+		../../include/abstractView.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dungeoncrawler.o ../../src/dungeoncrawler.cpp
 
 floor.o: ../../src/floor.cpp ../../include/floor.h \
 		../../include/tile.h \
 		../../include/character.h \
-		../../include/abstractui.h
+		../../include/abstractController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o floor.o ../../src/floor.cpp
 
 level.o: ../../src/level.cpp ../../include/level.h \
 		../../include/tile.h \
 		../../include/character.h \
-		../../include/abstractui.h \
+		../../include/abstractController.h \
 		../../include/floor.h \
 		../../include/wall.h \
-		../../include/portal.h
+		../../include/portal.h \
+		../../include/pit.h \
+		../../include/ramp.h \
+		../../include/switch.h \
+		../../include/active.h \
+		../../include/door.h \
+		../../include/passive.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o level.o ../../src/level.cpp
 
 main.o: ../../src/main.cpp ../../include/mainwindow.h \
 		/Users/lena/Qt/6.9.3/macos/lib/QtWidgets.framework/Headers/QMainWindow \
 		/Users/lena/Qt/6.9.3/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../include/dungeoncrawler.h \
-		../../include/abstractUI.h \
 		../../include/level.h \
-		../../include/character.h \
-		../../include/abstractui.h \
 		../../include/tile.h \
+		../../include/character.h \
+		../../include/abstractController.h \
+		../../include/terminalui.h \
+		../../include/abstractView.h \
 		/Users/lena/Qt/6.9.3/macos/lib/QtWidgets.framework/Headers/QApplication \
 		/Users/lena/Qt/6.9.3/macos/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../src/main.cpp
@@ -1009,28 +1062,53 @@ mainwindow.o: ../../src/mainwindow.cpp ../../include/mainwindow.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../../src/mainwindow.cpp
 
+passive.o: ../../src/passive.cpp ../../include/passive.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o passive.o ../../src/passive.cpp
+
+pit.o: ../../src/pit.cpp ../../include/pit.h \
+		../../include/tile.h \
+		../../include/character.h \
+		../../include/abstractController.h \
+		../../include/ramp.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pit.o ../../src/pit.cpp
+
 portal.o: ../../src/portal.cpp ../../include/portal.h \
 		../../include/tile.h \
 		../../include/character.h \
-		../../include/abstractui.h
+		../../include/abstractController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o portal.o ../../src/portal.cpp
 
+ramp.o: ../../src/ramp.cpp ../../include/ramp.h \
+		../../include/tile.h \
+		../../include/character.h \
+		../../include/abstractController.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ramp.o ../../src/ramp.cpp
+
+switch.o: ../../src/switch.cpp ../../include/switch.h \
+		../../include/floor.h \
+		../../include/tile.h \
+		../../include/character.h \
+		../../include/abstractController.h \
+		../../include/active.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o switch.o ../../src/switch.cpp
+
 terminalui.o: ../../src/terminalui.cpp ../../include/terminalui.h \
-		../../include/abstractui.h \
+		../../include/abstractView.h \
 		../../include/level.h \
 		../../include/tile.h \
-		../../include/character.h
+		../../include/character.h \
+		../../include/abstractController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o terminalui.o ../../src/terminalui.cpp
 
 tile.o: ../../src/tile.cpp ../../include/tile.h \
 		../../include/character.h \
-		../../include/abstractui.h
+		../../include/abstractController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tile.o ../../src/tile.cpp
 
 wall.o: ../../src/wall.cpp ../../include/wall.h \
 		../../include/tile.h \
 		../../include/character.h \
-		../../include/abstractui.h
+		../../include/abstractController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o wall.o ../../src/wall.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

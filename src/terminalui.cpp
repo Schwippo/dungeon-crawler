@@ -3,10 +3,11 @@
 #include "../include/tile.h"
 
 #include <iostream>
-#include <limits>
 
 void TerminalUI::draw(Level* level) {
+    if(!level) return;
     std::cout << "Aktuelles Level:\n\n";
+
     for (int r = 0; r < level->getHeight(); ++r) {
         for (int c = 0; c < level->getWidth(); ++c) {
             const Tile* t = level->getTile(r, c);
@@ -14,34 +15,23 @@ void TerminalUI::draw(Level* level) {
         }
         std::cout << "\n";
     }
-    std::cout.flush();
+    std::cout << "\n";
 }
 
 Input TerminalUI::move() {
-    std::cout.flush();
-    Input in{};
-    int v = -1;
+    std::cout << "Bitte Zug eingeben (w/a/s/d, q = Exit): ";
 
-    std::cout << "\nBitte eingeben (1.9, 5=stehen, 0=exit): ";
-    std::cout.flush();
+    char character;
+    std::cin >> character;
 
-    if (!(std::cin >> v)) {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return in; // no movement
-    }
+    Input in;
 
-    switch (v) {
-    case 0: in.quit = true; break;
-    case 1: in.dr = +1; in.dc = -1; break;
-    case 2: in.dr = +1; in.dc =  0; break;
-    case 3: in.dr = +1; in.dc = +1; break;
-    case 4: in.dr =  0; in.dc = -1; break;
-    case 5: in.dr =  0; in.dc =  0; break;
-    case 6: in.dr =  0; in.dc = +1; break;
-    case 7: in.dr = -1; in.dc = -1; break;
-    case 8: in.dr = -1; in.dc =  0; break;
-    case 9: in.dr = -1; in.dc = +1; break;
+    switch (character) {
+    case 'w': in.dr = -1; break;
+    case 's': in.dr = +1; break;
+    case 'a': in.dr = -1; break;
+    case 'd': in.dr = +1; break;
+
     default:
         std::cout << "Ungültige Eingabe\n";
         break;

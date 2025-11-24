@@ -1,19 +1,21 @@
 #ifndef DOOR_H
 #define DOOR_H
 
-#include "wall.h"
+#include "tile.h"
 #include "passive.h"
 
-class Door : public Wall, public Passive {
+class Door : public Tile, public Passive {
 private:
-    bool open;
+    bool isOpen;
 
 public:
     Door(int r, int c);
 
     void notify() override;
     std::pair<bool, Tile*> onEnter(Character* who) override;
-    // std::string getTexure() const;
+
+    // doors always can be left
+    bool onLeave(Tile* dest, Character* who) override { return true; }
 };
 
 #endif // DOOR_H

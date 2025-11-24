@@ -2,16 +2,18 @@
 #define LEVEL_H
 
 #include <vector>
-
-class Tile;
-class Character;
+#include "tile.h"
+#include "character.h"
 
 class Level {
-    int height{0};
-    int width{0};
+    int height;
+    int width;
 
     std::vector<std::vector<Tile*>> grid;
-    std::vector<Character*> characters;
+    Character* player;
+
+    void clear();
+    void copyFrom(const Level& other);
 
 public:
     Level();
@@ -27,8 +29,8 @@ public:
 
     void placeCharacter(Character* c, int r, int col);
 
-    Character* getPlayer() const;
-    const std::vector<Character*>& getCharacters() const;
+    Character* getPlayer() const { return player; }
+    // const std::vector<Character*>& getCharacters() const;
 };
 
 

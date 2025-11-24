@@ -1,17 +1,18 @@
 #include "../include/door.h"
+#include "../include/character.h"
 
-Door::Door(int r, int c) : Wall(r, c), open(false) {
+Door::Door(int r, int c) : Tile("X", r, c), isOpen(false) {
     texture = "X";
 }
 
 void Door::notify() {
-    open = !open;
-    texture = open ? "/" : "X";
+    isOpen = !isOpen;
+    texture = isOpen ? "/" : "X";
 }
 
 std::pair<bool, Tile*> Door::onEnter(Character* who) {
-    if(!open) {
-        return {false, nullptr};
+    if(isOpen) {
+        return {true, nullptr}; // can be entered
     }
-    return {true, nullptr};
+    return {false, nullptr}; // closed
 }
