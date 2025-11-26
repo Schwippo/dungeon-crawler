@@ -104,7 +104,6 @@ Uses WASD movement:
 
 ---
 
-## Status
-
-The project is actively extended throughout the practicum.
-Later stages will include NPCs, combat mechanics, inventory systems, and a Qt-based GUI.
+> [!NOTE]
+> The project is actively extended throughout the practicum.
+> Later stages will include NPCs, combat mechanics, inventory systems, and a Qt-based GUI.
