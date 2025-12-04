@@ -3,6 +3,8 @@
 
 #include <QPixmap>
 #include <vector>
+#include <map>
+#include <string>
 
 #include "abstractView.h"
 #include "abstractcontroller.h"
@@ -23,8 +25,18 @@ private:
     // input memory for move()
     Input lastInput;
 
-    // textures
+    // character + enemy animations
+    std::map<std::string, std::vector<QPixmap>> characterAnimations;
+    std::map<std::string, std::vector<QPixmap>> enemyAnimations;
+
+    // arrow icons
+    std::map<std::string, QPixmap> arrowIcons;
+
+    // tile textures
     std::vector<QPixmap> floorTextures;
+    std::vector<QPixmap> portalTextures;
+
+    // textures
     QPixmap wallTexture;
     QPixmap pitTexture;
     QPixmap rampTexture;
@@ -32,22 +44,13 @@ private:
     QPixmap doorClosedTexture;
     QPixmap doorOpenedTexture;
 
-    std::vector<QPixmap> portalTextures; // 3 different portals
-
-    // character textures
-    QPixmap charFront;
-    QPixmap charBack;
-    QPixmap charLeft;
-    QPixmap charRight;
-
     // ui-backgrounds & buttons
     QPixmap startBackground;
     QPixmap mainBackground;
     QPixmap newGameButtonTexture;
 
-    std::vector<QPixmap> arrowTextures; // 9 numpad-arrows
-
     void loadTextures();
+    std::string directionKeyFromInput(const Input& in) const;
 
 public:
     explicit GraphicalUI(DungeonCrawler* game);
@@ -66,7 +69,7 @@ public:
     void setLastInput(const Input& in);
     DungeonCrawler* getGame() const { return game; }
 
-    // texture-getter
+    // texture-getters
     const QPixmap& getFloorTexture(int index) const;
     const QPixmap& getWallTexture() const { return wallTexture; }
     const QPixmap& getPitTexture() const { return pitTexture; }
@@ -77,13 +80,12 @@ public:
     }
     const QPixmap& getPortalTexture(int type) const;
 
-    const QPixmap& getCharTexture(const Input& dir) const;
+    const QPixmap& getCharacterTexture(const Input& dir) const;
+    const QPixmap& getArrowTexture(const std::string& name) const;
 
     const QPixmap& getStartBackground() const { return startBackground; }
     const QPixmap& getMainBackground() const { return mainBackground; }
     const QPixmap& getNewGameButtonTexture() const { return newGameButtonTexture; }
-
-    const QPixmap& getArrowTexture(int idx) const { return arrowTextures.at(idx); }
 };
 
 #endif // GRAPHICALUI_H

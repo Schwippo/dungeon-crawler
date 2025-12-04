@@ -39,7 +39,8 @@ void MainWindow::setupLayouts() {
     setCentralWidget(central);
 
     backgroundLabel = new QLabel(central);
-    backgroundLabel->setPixmap(gui->getMainBackground());
+    backgroundLabel->setFixedSize(size());
+    backgroundLabel->setPixmap(gui->getMainBackground().scaled(size(), Qt::KeepAspectRatioByExpanding));
     backgroundLabel->setScaledContents(true);
     backgroundLabel->lower();
 
@@ -47,40 +48,68 @@ void MainWindow::setupLayouts() {
     buttonLayout = new QGridLayout();
     rootLayout = new QHBoxLayout();
 
+    tileLayout->setSpacing(0);
+    tileLayout->setHorizontalSpacing(0);
+    tileLayout->setVerticalSpacing(0);
+    tileLayout->setContentsMargins(0,0,0,0);
+
+    buttonLayout->setSpacing(10);
+    buttonLayout->setContentsMargins(0,0,0,0);
+
     rootLayout->addLayout(tileLayout, 3);
     rootLayout->addLayout(buttonLayout, 1);
 
     central->setLayout(rootLayout);
 }
 
+// mapping function 1-9 -> arrow-strings
+std::string MainWindow::arrowNameFromIndex(int index) const {
+    switch(index) {
+    case 1: return "up_left";
+    case 2: return "up";
+    case 3: return "up_right";
+
+    case 4: return "left";
+    case 5: return "skip";
+    case 6: return "right";
+
+    case 7: return "down_left";
+    case 8: return "down";
+    case 9: return "down_right";
+    }
+    return "skip";
+}
+
 void MainWindow::createControlButtons() {
     // 3x3 buttons
-    int index = 0;
+    int index = 1;
 
     for(int r = 0; r < 3; ++r) {
         for(int c = 0; c < 3; ++c) {
             QPushButton* button = new QPushButton(this);
 
-            button->setIcon(QIcon(gui->getArrowTexture(index)));
+            std::string arrowName = arrowNameFromIndex(index);
+            button->setIcon(QIcon(gui->getArrowTexture(arrowName)));
             button->setIconSize(QSize(64, 64));
+            button->setFixedSize(64, 64);
             button->setFlat(true);
             button->setStyleSheet("border:none;");
 
             int dirRow = r - 1; // mapping to -1, 0, 1
             int dirCol = c - 1;
-            bool quit = false;
 
             // 5 = standing still -> dirRow=0, dirCol=0, quit=false
             connect(button, &QPushButton::clicked, [=]() {
-                handleMoveClick(dirRow, dirCol, quit);
+                handleMoveClick(dirRow, dirCol, false);
             });
 
             buttonLayout->addWidget(button, r, c);
-            ++index;
+            index++;
         }
     }
 }
 
+// move click logic
 void MainWindow::handleMoveClick(int dirRow, int dirCol, bool quit) {
     Input in;
     in.dr = dirRow;
@@ -168,7 +197,7 @@ void MainWindow::updateView(Level* level) {
         }
 
         Input dir = player->getMoveDirection();
-        characterLabel->setPixmap(gui->getCharTexture(dir));
+        characterLabel->setPixmap(gui->getCharacterTexture(dir));
 
         if (charRow != -1 && charCol != -1)
             tileLayout->removeWidget(characterLabel);
@@ -182,18 +211,6 @@ void MainWindow::updateView(Level* level) {
             characterLabel->lower();
         else
             characterLabel->raise();
-    }
-
-    updateTileSizes();
-}
-
-void MainWindow::resizeEvent(QResizeEvent* event) {
-    QMainWindow::resizeEvent(event);
-
-    if (backgroundLabel) {
-        backgroundLabel->setGeometry(rect());
-        backgroundLabel->setPixmap(gui->getMainBackground().scaled(
-            size(), Qt::KeepAspectRatioByExpanding));
     }
 
     updateTileSizes();

@@ -38,14 +38,14 @@ Level::Level() : height(0), width(0), player(nullptr) {
     // example
     const std::vector<std::string> map = {
         "##########",
-        "#O.......#",
-        "#........#",
-        "#........#",
-        "#........#",
-        "#........#",
+        "#O.....<.#",
+        "#..../...#",
+        "#...O....#",
+        "#?.......#",
+        "#..../...#",
         "##########",
         "#O.......#",
-        "#........#",
+        "#....O<..#",
         "##########"
     };
 
@@ -65,7 +65,7 @@ Level::Level() : height(0), width(0), player(nullptr) {
             case 'O': {
                 // Portal with type
 
-                int type = portals.size() / 2;
+                int type = portals.size() / 3;
                 // Portal 0 & 1 -> Type 0
                 // Portal 2 & 3 -> Type 1
                 // Portal 4 & 5 -> Type 2 ...
@@ -79,20 +79,24 @@ Level::Level() : height(0), width(0), player(nullptr) {
                 Switch* s = new Switch(r, c);
                 grid[r][c] = s;
                 switches.push_back(s);
+                break;
             }
             case 'X': {
                 Door* d = new Door(r, c);
                 grid[r][c] = d;
                 doors.push_back(d);
+                break;
             }
             case '/': {
                 Door* d = new Door(r, c);
                 d->notify(); // open door
                 grid[r][c] = d;
                 doors.push_back(d);
+                break;
             }
             default:
                 grid[r][c] = createBasicTile(ch, r, c);
+                break;
             }
         }
     }

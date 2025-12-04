@@ -5,6 +5,7 @@
 #include "../include/level.h"
 
 #include <QString>
+#include <QDebug>
 
 GraphicalUI::GraphicalUI(DungeonCrawler* game)
     : game(game), startScreen(nullptr), mainWindow(nullptr) {
@@ -26,40 +27,86 @@ GraphicalUI::~GraphicalUI() {
 
 void GraphicalUI::loadTextures() {
 
-    // floor
-    floorTextures.push_back(QPixmap("../textures/floor/floor1.png"));
-    floorTextures.push_back(QPixmap("../textures/floor/floor2.png"));
-    floorTextures.push_back(QPixmap("../textures/floor/floor3.png"));
-    floorTextures.push_back(QPixmap("../textures/floor/floor4.png"));
-    floorTextures.push_back(QPixmap("../textures/floor/floor5.png"));
+    // floor textures
+    floorTextures.push_back(QPixmap(":/textures/floor/floor1.png"));
+    floorTextures.push_back(QPixmap(":/textures/floor/floor2.png"));
+    floorTextures.push_back(QPixmap(":/textures/floor/floor3.png"));
+    floorTextures.push_back(QPixmap(":/textures/floor/floor4.png"));
+    floorTextures.push_back(QPixmap(":/textures/floor/floor5.png"));
 
-    wallTexture = QPixmap("../textures/wall/wall1.png");
-    pitTexture = QPixmap("../textures/pit.png");
-    rampTexture = QPixmap("../textures/ramp.png");
-    switchTexture = QPixmap("../textures/switch.png");
+    // walls / tiles
+    wallTexture = QPixmap(":/textures/wall/wall1.png");
+    pitTexture = QPixmap(":/textures/pit.png");
+    rampTexture = QPixmap(":/textures/ramp.png");
+    switchTexture = QPixmap(":/textures/switch.png");
 
-    doorClosedTexture = QPixmap("../textures/doors/door1.png");
-    doorOpenedTexture = QPixmap("../textures/doors/door2.png");
+    doorClosedTexture = QPixmap(":/textures/doors/door1.png");
+    doorOpenedTexture = QPixmap(":/textures/doors/door2.png");
 
-    portalTextures.push_back(QPixmap("../textures/portal/portal1.png"));
-    portalTextures.push_back(QPixmap("../textures/portal/portal2.png"));
-    portalTextures.push_back(QPixmap("../textures/portal/portal3.png"));
+    // portals
+    portalTextures.push_back(QPixmap(":/textures/portal/portal1.png"));
+    portalTextures.push_back(QPixmap(":/textures/portal/portal2.png"));
+    portalTextures.push_back(QPixmap(":/textures/portal/portal3.png"));
 
-    // character TO DO : VECTOR WITH ALL VARIANTS
-    charFront = QPixmap("../textures/char/char_front_1.png");
-    charBack = QPixmap("../textures/char/back/char_back_1.png");
-    charLeft = QPixmap("../textures/char/left/char_left_1.png");
-    charRight = QPixmap("../textures/char/right/char_right_1.png");
+    // character front
+    {
+        std::vector<QPixmap> frames;
+        frames.push_back(QPixmap(":/textures/char/front/char_front_1.png"));
+        frames.push_back(QPixmap(":/textures/char/front/char_front_2.png"));
+        frames.push_back(QPixmap(":/textures/char/front/char_front_3.png"));
 
-    // UI
-    startBackground = QPixmap("../textures/startscreen.png");
-    mainBackground = QPixmap("../textures/startscreen__.png");
-    newGameButtonTexture = QPixmap("../textures/new_game_button.png");
+        characterAnimations["front"] = frames;
+    };
 
-    // 9 directions for buttons
-    for(int i = 0; i <= 9; ++i)
-        // TO DO PUSH BACK ALL BUTTONS
-        arrowTextures.push_back(QPixmap(QString("../textures/arrows/%1.png").arg(i)));
+    // character back
+    {
+        std::vector<QPixmap> frames;
+        frames.push_back(QPixmap(":/textures/char/back/char_back_1.png"));
+        frames.push_back(QPixmap(":/textures/char/back/char_back_2.png"));
+        frames.push_back(QPixmap(":/textures/char/back/char_back_3.png"));
+
+        characterAnimations["back"] = frames;
+    };
+
+    // character left
+    {
+        std::vector<QPixmap> frames;
+        frames.push_back(QPixmap(":/textures/char/left/char_left_1.png"));
+        frames.push_back(QPixmap(":/textures/char/left/char_left_2.png"));
+        frames.push_back(QPixmap(":/textures/char/left/char_left_3.png"));
+
+        characterAnimations["left"] = frames;
+    };
+
+    // character right
+    {
+        std::vector<QPixmap> frames;
+        frames.push_back(QPixmap(":/textures/char/right/char_right_1.png"));
+        frames.push_back(QPixmap(":/textures/char/right/char_right_2.png"));
+        frames.push_back(QPixmap(":/textures/char/right/char_right_3.png"));
+
+        characterAnimations["right"] = frames;
+    };
+
+    // zombies
+    enemyAnimations["zombie_left"] = { QPixmap(":/textures/zombie/zombie_left.png") };
+    enemyAnimations["zombie_right"] = { QPixmap(":/textures/zombie/zombie_right.png") };
+
+    // arrow icons
+    arrowIcons["up"] = QPixmap(":/textures/arrows/arrow_up.png");
+    arrowIcons["down"] = QPixmap(":/textures/arrows/arrow_down.png");
+    arrowIcons["left"] = QPixmap(":/textures/arrows/arrow_left.png");
+    arrowIcons["right"] = QPixmap(":/textures/arrows/arrow_right.png");
+    arrowIcons["up_left"] = QPixmap(":/textures/arrows/arrow_up_left.png");
+    arrowIcons["up_right"] = QPixmap(":/textures/arrows/arrow_up_right.png");
+    arrowIcons["down_left"] = QPixmap(":/textures/arrows/arrow_down_left.png");
+    arrowIcons["down_right"] = QPixmap(":/textures/arrows/arrow_down_right.png");
+    arrowIcons["skip"] = QPixmap(":/textures/arrows/arrow_skip.png");
+
+    // UI textures
+    startBackground = QPixmap(":/textures/startscreen.png");
+    mainBackground = QPixmap(":/textures/startscreen__.png");
+    newGameButtonTexture = QPixmap(":/textures/new_game_button.png");
 }
 
 const QPixmap& GraphicalUI::getFloorTexture(int index) const {
@@ -73,13 +120,43 @@ const QPixmap& GraphicalUI::getPortalTexture(int type) const {
     return portalTextures[type % portalTextures.size()];
 }
 
-const QPixmap& GraphicalUI::getCharTexture(const Input& dir) const {
-    if(dir.dr < 0) return charFront;
-    if(dir.dr > 0) return charBack;
-    if(dir.dc < 0) return charLeft;
-    if(dir.dc > 0) return charRight;
+std::string GraphicalUI::directionKeyFromInput(const Input& in) const {
+    if(in.dr < 0) return "back";
+    if(in.dr > 0) return "front";
+    if(in.dc < 0) return "left";
+    if(in.dc > 0) return "right";
 
-    return charBack; // standard
+    return "front"; // standard
+}
+
+const QPixmap& GraphicalUI::getCharacterTexture(const Input& dir) const {
+    std::string key = directionKeyFromInput(dir);
+
+    auto it = characterAnimations.find(key);
+    if(it != characterAnimations.end() && !it->second.empty()) {
+        return it->second[0]; // first frame of direction
+    }
+
+    auto itFront = characterAnimations.find("front");
+    if(itFront != characterAnimations.end() && !it->second.empty()){
+        qDebug() << "Warnung: Character-key" << QString::fromStdString(key) << " nicht gefunden.";
+        return itFront->second[0];
+    }
+
+    static QPixmap dummy;
+    qDebug() << "Warnung: Character-Texturen leer oder Keys fehlen";
+    return dummy;
+}
+
+const QPixmap& GraphicalUI::getArrowTexture(const std::string& name) const {
+    auto it = arrowIcons.find(name);
+    if(it != arrowIcons.end()) {
+        return it->second;
+    }
+
+    static QPixmap dummy;
+    qDebug() << "Warnung: Arrow-Icon nicht gefunden für Key:" << QString::fromStdString(name);
+    return dummy;
 }
 
 void GraphicalUI::draw(Level* level) {

@@ -27,9 +27,6 @@ public:
 
     void updateView(Level* level);
 
-protected:
-    void resizeEvent(QResizeEvent* event) override;
-
 private:
     Ui::MainWindow* ui;
     GraphicalUI* gui;
@@ -48,5 +45,7 @@ private:
     void updateTileSizes();
 
     void handleMoveClick(int dirRow, int dirCol, bool quit);
+
+    std::string arrowNameFromIndex(int index) const;
 };
 #endif // MAINWINDOW_H

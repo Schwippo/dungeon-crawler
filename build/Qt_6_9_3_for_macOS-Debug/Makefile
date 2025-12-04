@@ -71,7 +71,8 @@ SOURCES       = ../../src/abstractView.cpp \
 		../../src/switch.cpp \
 		../../src/terminalui.cpp \
 		../../src/tile.cpp \
-		../../src/wall.cpp moc_mainwindow.cpp \
+		../../src/wall.cpp qrc_resources.cpp \
+		moc_mainwindow.cpp \
 		moc_startscreen.cpp
 OBJECTS       = abstractView.o \
 		abstractcontroller.o \
@@ -93,6 +94,7 @@ OBJECTS       = abstractView.o \
 		terminalui.o \
 		tile.o \
 		wall.o \
+		qrc_resources.o \
 		moc_mainwindow.o \
 		moc_startscreen.o
 DIST          = /Users/lena/Qt/6.9.3/macos/mkspecs/features/spec_pre.prf \
@@ -656,6 +658,7 @@ Makefile: ../../DungeonCrawlerQt.pro /Users/lena/Qt/6.9.3/macos/mkspecs/macx-cla
 		/Users/lena/Qt/6.9.3/macos/mkspecs/features/yacc.prf \
 		/Users/lena/Qt/6.9.3/macos/mkspecs/features/lex.prf \
 		../../DungeonCrawlerQt.pro \
+		../../resources.qrc \
 		/Users/lena/Qt/6.9.3/macos/lib/QtWidgets.framework/Resources/QtWidgets.prl \
 		/Users/lena/Qt/6.9.3/macos/lib/QtGui.framework/Resources/QtGui.prl \
 		/Users/lena/Qt/6.9.3/macos/lib/QtTest.framework/Resources/QtTest.prl \
@@ -911,6 +914,7 @@ Makefile: ../../DungeonCrawlerQt.pro /Users/lena/Qt/6.9.3/macos/mkspecs/macx-cla
 /Users/lena/Qt/6.9.3/macos/mkspecs/features/yacc.prf:
 /Users/lena/Qt/6.9.3/macos/mkspecs/features/lex.prf:
 ../../DungeonCrawlerQt.pro:
+../../resources.qrc:
 /Users/lena/Qt/6.9.3/macos/lib/QtWidgets.framework/Resources/QtWidgets.prl:
 /Users/lena/Qt/6.9.3/macos/lib/QtGui.framework/Resources/QtGui.prl:
 /Users/lena/Qt/6.9.3/macos/lib/QtTest.framework/Resources/QtTest.prl:
@@ -939,6 +943,7 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents ../../resources.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../include/abstractView.h ../../include/abstractcontroller.h ../../include/active.h ../../include/character.h ../../include/door.h ../../include/dungeoncrawler.h ../../include/floor.h ../../include/graphicalui.h ../../include/level.h ../../include/mainwindow.h ../../include/passive.h ../../include/pit.h ../../include/portal.h ../../include/ramp.h ../../include/startscreen.h ../../include/switch.h ../../include/terminalui.h ../../include/tile.h ../../include/wall.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../../src/abstractView.cpp ../../src/abstractcontroller.cpp ../../src/active.cpp ../../src/character.cpp ../../src/door.cpp ../../src/dungeoncrawler.cpp ../../src/floor.cpp ../../src/graphicalui.cpp ../../src/level.cpp ../../src/main.cpp ../../src/mainwindow.cpp ../../src/passive.cpp ../../src/pit.cpp ../../src/portal.cpp ../../src/ramp.cpp ../../src/startscreen.cpp ../../src/switch.cpp ../../src/terminalui.cpp ../../src/tile.cpp ../../src/wall.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../mainwindow.ui ../../startscreen.ui $(DISTDIR)/
@@ -968,8 +973,56 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_resources.cpp
+qrc_resources.cpp: ../../resources.qrc \
+		/Users/lena/Qt/6.9.3/macos/libexec/rcc \
+		../../textures/new_game_button.png \
+		../../textures/chest.png \
+		../../textures/levelchanger.png \
+		../../textures/ramp.png \
+		../../textures/startscreen.png \
+		../../textures/startscreen__.png \
+		../../textures/switch.png \
+		../../textures/bloody_frame.png \
+		../../textures/pit.png \
+		../../textures/arrows/arrow_down.png \
+		../../textures/arrows/arrow_down_left.png \
+		../../textures/arrows/arrow_up_left.png \
+		../../textures/arrows/arrow_right.png \
+		../../textures/arrows/arrow_skip.png \
+		../../textures/arrows/arrow_left.png \
+		../../textures/arrows/arrow_up.png \
+		../../textures/arrows/arrow_up_right.png \
+		../../textures/arrows/arrow_down_right.png \
+		../../textures/wall/wall1.png \
+		../../textures/floor/floor2.png \
+		../../textures/floor/floor3.png \
+		../../textures/floor/floor4.png \
+		../../textures/floor/floor1.png \
+		../../textures/floor/floor5.png \
+		../../textures/doors/door2.png \
+		../../textures/doors/door1.png \
+		../../textures/zombie/zombie_left.png \
+		../../textures/zombie/zombie_right.png \
+		../../textures/char/right/char_right_1.png \
+		../../textures/char/right/char_right_2.png \
+		../../textures/char/right/char_right_3.png \
+		../../textures/char/front/char_front_2.png \
+		../../textures/char/front/char_front_3.png \
+		../../textures/char/front/char_front_1.png \
+		../../textures/char/back/char_back_2.png \
+		../../textures/char/back/char_back_1.png \
+		../../textures/char/back/char_back_3.png \
+		../../textures/char/left/char_left_1.png \
+		../../textures/char/left/char_left_2.png \
+		../../textures/char/left/char_left_3.png \
+		../../textures/portal/portal3.png \
+		../../textures/portal/portal1.png \
+		../../textures/portal/portal2.png
+	/Users/lena/Qt/6.9.3/macos/libexec/rcc -name resources --no-zstd ../../resources.qrc -o qrc_resources.cpp
+
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_startscreen.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_startscreen.cpp
@@ -1008,7 +1061,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -1067,7 +1120,9 @@ graphicalui.o: ../../src/graphicalui.cpp ../../include/graphicalui.h \
 		/Users/lena/Qt/6.9.3/macos/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../include/dungeoncrawler.h \
 		/Users/lena/Qt/6.9.3/macos/lib/QtCore.framework/Headers/QString \
-		/Users/lena/Qt/6.9.3/macos/lib/QtCore.framework/Headers/qstring.h
+		/Users/lena/Qt/6.9.3/macos/lib/QtCore.framework/Headers/qstring.h \
+		/Users/lena/Qt/6.9.3/macos/lib/QtCore.framework/Headers/QDebug \
+		/Users/lena/Qt/6.9.3/macos/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o graphicalui.o ../../src/graphicalui.cpp
 
 level.o: ../../src/level.cpp ../../include/level.h \
@@ -1201,6 +1256,9 @@ wall.o: ../../src/wall.cpp ../../include/wall.h \
 		../../include/character.h \
 		../../include/abstractController.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o wall.o ../../src/wall.cpp
+
+qrc_resources.o: qrc_resources.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
