@@ -37,6 +37,9 @@ bool Tile::moveTo(Tile *destTile, Character *who) {
     // character notices where he stands
     who->setTile(finalTile);
     return true;
+
+    bool enteredSwitch = destTile->isSwitch();
+    return enteredSwitch;
 }
 
 bool Tile::onLeave(Tile* /*destTile*/, Character* /*who*/) {

@@ -9,3 +9,7 @@ std::pair<bool, Tile*> Switch::onEnter(Character* who) {
     active(); // notifys all doors
     return {true, nullptr};
 }
+
+bool Switch::onLeave(Tile*, Character*) {
+    return true;
+}

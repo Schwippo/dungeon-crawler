@@ -5,11 +5,11 @@ Portal::Portal(int r, int c, int type)
 
 void Portal::setDestination(Portal* p) { destination = p; }
 
-std::pair<bool, Tile *> Portal::onEnter(Character *who) {
+std::pair<bool, Tile *> Portal::onEnter(Character* who) {
     if(destination) {
         return {true, destination};
     }
-    return {false, destination};
+    return {true, destination};
 }
 
 bool Portal::onLeave(Tile* /*dest*/, Character* /*who*/) {

@@ -13,8 +13,10 @@ GraphicalUI::GraphicalUI(DungeonCrawler* game)
     loadTextures();
 
     // create window
-    startScreen = new startscreen(this);
+    startScreen = new startscreen(this, nullptr);
     mainWindow = new MainWindow(this);
+    mainWindow->setMinimumSize(1100, 850);
+    mainWindow->resize(110, 850);
 
     startScreen->show();
     mainWindow->hide();

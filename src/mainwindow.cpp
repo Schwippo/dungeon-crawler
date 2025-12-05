@@ -26,6 +26,8 @@ MainWindow::MainWindow(GraphicalUI* gui, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), gui(gui), backgroundLabel(nullptr), tileLayout(nullptr), buttonLayout(nullptr), rootLayout(nullptr), characterLabel(nullptr)
 {
     ui->setupUi(this);
+    setMinimumSize(1500, 850);
+    resize(1500, 850);
     setupLayouts();
     createControlButtons();
 }
@@ -53,7 +55,7 @@ void MainWindow::setupLayouts() {
     tileLayout->setVerticalSpacing(0);
     tileLayout->setContentsMargins(0,0,0,0);
 
-    buttonLayout->setSpacing(10);
+    buttonLayout->setSpacing(5);
     buttonLayout->setContentsMargins(0,0,0,0);
 
     rootLayout->addLayout(tileLayout, 3);
@@ -91,7 +93,6 @@ void MainWindow::createControlButtons() {
             std::string arrowName = arrowNameFromIndex(index);
             button->setIcon(QIcon(gui->getArrowTexture(arrowName)));
             button->setIconSize(QSize(64, 64));
-            button->setFixedSize(64, 64);
             button->setFlat(true);
             button->setStyleSheet("border:none;");
 
@@ -121,6 +122,42 @@ void MainWindow::handleMoveClick(int dirRow, int dirCol, bool quit) {
     DungeonCrawler* game = gui->getGame();
     if(game)
         game->turn();
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event) {
+    QMainWindow::resizeEvent(event);
+
+    // adjust background image to window size
+    if(backgroundLabel) {
+        backgroundLabel->setGeometry(0, 0, width(), height());
+        backgroundLabel->setPixmap(gui->getMainBackground().scaled(backgroundLabel->size(),
+                                                                   Qt::KeepAspectRatioByExpanding,
+                                                                   Qt::SmoothTransformation));
+    }
+
+    // adjust size of tiles
+    if(!tileLabels.empty()) {
+        // calaculate field size
+        int rows = tileLabels.size();
+        int cols = tileLabels[0].size();
+
+        // max. tile size
+        int availableW = centralWidget()->width() * 0.75;
+        int availableH = centralWidget()->height();
+
+        int tileSize = std::min(availableW / cols, availableH / rows);
+
+        // resize tiles
+        for(auto& row : tileLabels) {
+            for(QLabel* l : row) {
+                l->setFixedSize(tileSize, tileSize);
+            }
+        }
+
+        // resize character icon
+        if(characterLabel)
+            characterLabel->setFixedSize(tileSize, tileSize);
+    }
 }
 
 void MainWindow::updateView(Level* level) {
@@ -159,22 +196,22 @@ void MainWindow::updateView(Level* level) {
 
             QPixmap pix;
 
-            if (auto f = dynamic_cast<Floor*>(t)) {
+            if (dynamic_cast<Floor*>(t)) {
                 pix = gui->getFloorTexture(r * width + c);
 
-            } else if (auto wll = dynamic_cast<Wall*>(t)) {
+            } else if ( dynamic_cast<Wall*>(t)) {
                 pix = gui->getWallTexture();
 
             } else if (auto p = dynamic_cast<Portal*>(t)) {
                 pix = gui->getPortalTexture(p->getPortalType());
 
-            } else if (auto pit = dynamic_cast<Pit*>(t)) {
+            } else if (dynamic_cast<Pit*>(t)) {
                 pix = gui->getPitTexture();
 
-            } else if (auto rp = dynamic_cast<Ramp*>(t)) {
+            } else if (dynamic_cast<Ramp*>(t)) {
                 pix = gui->getRampTexture();
 
-            } else if (auto sw = dynamic_cast<Switch*>(t)) {
+            } else if (dynamic_cast<Switch*>(t)) {
                 pix = gui->getSwitchTexture();
 
             } else if (auto d = dynamic_cast<Door*>(t)) {
@@ -199,18 +236,32 @@ void MainWindow::updateView(Level* level) {
         Input dir = player->getMoveDirection();
         characterLabel->setPixmap(gui->getCharacterTexture(dir));
 
-        if (charRow != -1 && charCol != -1)
+        QLabel* tileLabel = tileLabels[r][c];
+        QPoint pos = tileLabel->pos();
+        characterLabel->move(pos);
+
+        /*if (charRow != -1 && charCol != -1)
             tileLayout->removeWidget(characterLabel);
 
         tileLayout->addWidget(characterLabel, r, c);
         charRow = r;
         charCol = c;
+        */
 
         // sneak character if it's in a pit
         if (dynamic_cast<Pit*>(level->getTile(r, c)))
             characterLabel->lower();
         else
             characterLabel->raise();
+    }
+
+    // redraw doors if any switch was activated
+    for(int r = 0; r < height; ++r) {
+        for(int c = 0; c < width; ++c) {
+            if(auto d = dynamic_cast<Door*>(level->getTile(r, c))) {
+                    tileLabels[r][c]->setPixmap(gui->getDoorTexture(d->isOpenDoor()));
+            }
+        }
     }
 
     updateTileSizes();

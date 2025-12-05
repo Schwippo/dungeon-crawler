@@ -64,9 +64,8 @@ bool DungeonCrawler::turn() {
     Tile* destTile = level->getTile(newRow, newCol);
 
     // 3) movement if in level
-    if (destTile) {
+    if (destTile)
         currentTile->moveTo(destTile, player);
-    }
 
     view->draw(level);
     return true;

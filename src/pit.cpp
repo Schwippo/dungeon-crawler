@@ -5,12 +5,14 @@
 Pit::Pit(int r, int c) : Tile("_", r, c) {}
 
 std::pair<bool, Tile*> Pit::onEnter(Character* who) {
-    return {true, nullptr}; // can always be entered
+    if(who) {
+        who->setTile(nullptr); // character sneaks into tile
+    }
+    setCharacter(nullptr);
+    return {true, nullptr};
 }
 
 bool Pit::onLeave(Tile* dest, Character* who) {
     // can only be left to pit or ramp
-    if(dynamic_cast<Pit*>(dest)) return true;
-    if(dynamic_cast<Ramp*>(dest)) return true;
-    return false;
+    return dynamic_cast<Pit*>(dest) || dynamic_cast<Ramp*>(dest);
 }

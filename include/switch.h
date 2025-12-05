@@ -8,6 +8,9 @@ class Switch : public Floor, public Active {
 public:
     Switch(int r, int c);
     std::pair<bool, Tile*> onEnter(Character* who) override;
+    bool onLeave(Tile*, Character*) override;
+
+    bool isSwitch() const override { return true; }
 };
 
 #endif // SWITCH_H

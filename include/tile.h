@@ -38,6 +38,8 @@ public:
     // Event on enter (allowed? -> alternative dest. floor)
     // Portal uses alternative dest. floor, else nullptr
     virtual std::pair<bool, Tile*> onEnter(Character* who) = 0;
+
+    virtual bool isSwitch() const { return false; }
 };
 
 

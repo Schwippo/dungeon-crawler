@@ -10,6 +10,11 @@
 startscreen::startscreen(GraphicalUI* gui, QWidget *parent)
     : QDialog(parent), ui(new Ui::startscreen), gui(gui) {
     ui->setupUi(this);
+
+    // set to real window
+    setWindowFlags(Qt::Window);
+    resize(800,800);
+
     setupUIElements();
 }
 

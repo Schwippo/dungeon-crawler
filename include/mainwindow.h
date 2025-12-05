@@ -27,6 +27,9 @@ public:
 
     void updateView(Level* level);
 
+protected:
+    void resizeEvent(QResizeEvent* event);
+
 private:
     Ui::MainWindow* ui;
     GraphicalUI* gui;
